@@ -3,9 +3,14 @@ server:
 #spring:
 #  profiles:
 #    active: after_route
+
+#spring:
+#  profiles:
+#    active: header_route
+
 spring:
   profiles:
-    active: header_route
+    active: cookie_route
 
 ---
 spring:
@@ -28,3 +33,15 @@ spring:
         predicates:
         - Header=X-Request-Id, \d+
   profiles: header_route
+
+
+---
+spring:
+     cloud:
+       gateway:
+         routes:
+         - id: cookie_route
+           uri: http://httpbin.org:80/get
+           predicates:
+           - Cookie=name,way
+     profiles: cookie_route

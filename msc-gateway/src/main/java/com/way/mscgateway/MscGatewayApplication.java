@@ -19,45 +19,45 @@ public class MscGatewayApplication {
     }
 
 
-    @Bean
-    public RouteLocator myRoutes(RouteLocatorBuilder builder){
-        String httpUri = "http://httpbin.org:80";
-
-        return builder.routes()
-                .route(p->p
-                .path("/get")
-                .filters(f->f.addRequestHeader("Hello","World"))
-//                .uri("http://localhost:8761"))
-                .uri(httpUri))
-
-                /**
-                 * 当我们向gateway工程请求“/get”,
-                 * gateway会将工程的请求转发到“http://httpbin.org/get”，
-                 * 并且在转发之前，加上一个filter，
-                 * 该filter会将请求添加一个header,
-                 * key为hello，value为world。
-                 */
-
-                .route(p -> p
-                        .host("*.hystrix.com")
-                        .filters(f -> f
-                                .hystrix(config -> config
-                                        .setName("mycmd")
-                                        .setFallbackUri("forward:/fallback")))
-                        .uri(httpUri))
-                .build();
-
-        /**
-         *在上面的代码中，我们使用了另外一个router，
-         * 该router使用host去断言请求是否进入该路由，
-         * 当请求的host有“*.hystrix.com”，都会进入该router，
-         * 该router中有一个hystrix的filter,该filter可以配置名称、和指向性fallback的逻辑的地址，
-         * 比如本案例中重定向到了“/fallback”
-         */
-
-
-
-    }
+//    @Bean
+//    public RouteLocator myRoutes(RouteLocatorBuilder builder){
+//        String httpUri = "http://httpbin.org:80";
+//
+//        return builder.routes()
+//                .route(p->p
+//                .path("/get")
+//                .filters(f->f.addRequestHeader("Hello","World"))
+////                .uri("http://localhost:8761"))
+//                .uri(httpUri))
+//
+//                /**
+//                 * 当我们向gateway工程请求“/get”,
+//                 * gateway会将工程的请求转发到“http://httpbin.org/get”，
+//                 * 并且在转发之前，加上一个filter，
+//                 * 该filter会将请求添加一个header,
+//                 * key为hello，value为world。
+//                 */
+//
+//                .route(p -> p
+//                        .host("*.hystrix.com")
+//                        .filters(f -> f
+//                                .hystrix(config -> config
+//                                        .setName("mycmd")
+//                                        .setFallbackUri("forward:/fallback")))
+//                        .uri(httpUri))
+//                .build();
+//
+//        /**
+//         *在上面的代码中，我们使用了另外一个router，
+//         * 该router使用host去断言请求是否进入该路由，
+//         * 当请求的host有“*.hystrix.com”，都会进入该router，
+//         * 该router中有一个hystrix的filter,该filter可以配置名称、和指向性fallback的逻辑的地址，
+//         * 比如本案例中重定向到了“/fallback”
+//         */
+//
+//
+//
+//    }
 
     @RequestMapping("/fallback")
     public Mono<String> fallback() {

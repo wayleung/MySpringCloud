@@ -10,7 +10,7 @@ server:
 #....
 spring:
   profiles:
-    active: query_route
+    active: add_request_header_route
 
 ---
 spring:
@@ -95,3 +95,22 @@ spring:
            predicates:
            - Query=name,way
      profiles: query_route
+
+
+---
+spring:
+     cloud:
+       gateway:
+         routes:
+         - id: add_request_header_route
+           uri: http://httpbin.org:80/get
+#           uri: http://127.0.0.1:8761
+           filters:
+           - AddRequestHeader=X-Request-Foo, Way
+           predicates:
+           - Method=Get
+     profiles: add_request_header_route
+
+
+
+

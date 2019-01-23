@@ -1,8 +1,11 @@
 server:
   port: 8082
+#spring:
+#  profiles:
+#    active: after_route
 spring:
   profiles:
-    active: after_route
+    active: header_route
 
 ---
 spring:
@@ -15,3 +18,13 @@ spring:
         - After=2017-01-20T17:42:47.789-07:00[America/Denver]
   profiles: after_route
 
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: header_route
+        uri: http://httpbin.org:80/get
+        predicates:
+        - Header=X-Request-Id, \d+
+  profiles: header_route

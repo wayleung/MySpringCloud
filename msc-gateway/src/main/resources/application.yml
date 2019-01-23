@@ -7,10 +7,10 @@ server:
 #spring:
 #  profiles:
 #    active: header_route
-
+#....
 spring:
   profiles:
-    active: cookie_route
+    active: method_route
 
 ---
 spring:
@@ -58,3 +58,16 @@ spring:
         predicates:
         - Host=**.fangzhipeng.com
   profiles: host_route
+
+
+
+---
+spring:
+     cloud:
+       gateway:
+         routes:
+         - id: method_route
+           uri: http://httpbin.org:80/get
+           predicates:
+           - Method=GET
+     profiles: method_route

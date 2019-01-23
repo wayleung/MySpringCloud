@@ -10,7 +10,7 @@ server:
 #....
 spring:
   profiles:
-    active: path_route
+    active: query_route
 
 ---
 spring:
@@ -83,3 +83,15 @@ spring:
            predicates:
            - Path=/foo/{segment}
      profiles: path_route
+
+
+---
+spring:
+     cloud:
+       gateway:
+         routes:
+         - id: query_route
+           uri: http://httpbin.org:80/get
+           predicates:
+           - Query=name,way
+     profiles: query_route

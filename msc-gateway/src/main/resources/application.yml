@@ -10,7 +10,7 @@ server:
 #....
 spring:
   profiles:
-    active: method_route
+    active: path_route
 
 ---
 spring:
@@ -71,3 +71,15 @@ spring:
            predicates:
            - Method=GET
      profiles: method_route
+
+
+---
+spring:
+     cloud:
+       gateway:
+         routes:
+         - id: path_route
+           uri: http://httpbin.org:80/get
+           predicates:
+           - Path=/foo/{segment}
+     profiles: path_route

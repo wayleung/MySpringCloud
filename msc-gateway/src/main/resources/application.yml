@@ -35,6 +35,7 @@ spring:
   profiles: header_route
 
 
+
 ---
 spring:
      cloud:
@@ -45,3 +46,15 @@ spring:
            predicates:
            - Cookie=name,way
      profiles: cookie_route
+
+
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: host_route
+        uri: http://httpbin.org:80/get
+        predicates:
+        - Host=**.fangzhipeng.com
+  profiles: host_route

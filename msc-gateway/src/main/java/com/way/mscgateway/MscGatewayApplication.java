@@ -2,6 +2,7 @@ package com.way.mscgateway;
 
 //import com.way.mscgateway.filter.RequestTimeFilter;
 import com.way.mscgateway.filter.RequestTimeGatewayFilterFactory;
+import com.way.mscgateway.filter.TokenFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -87,6 +88,16 @@ public class MscGatewayApplication {
     @Bean
     public RequestTimeGatewayFilterFactory elapsedGatewayFilterFactory(){
         return new RequestTimeGatewayFilterFactory();
+    }
+
+
+    /**
+     * 全局过滤器 注入到IOC容器
+     * @return
+     */
+    @Bean
+    public TokenFilter getTokenFilter(){
+        return new TokenFilter();
     }
 
 

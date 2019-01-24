@@ -1,6 +1,7 @@
 package com.way.mscgateway;
 
-import com.way.mscgateway.filter.RequestTimeFilter;
+//import com.way.mscgateway.filter.RequestTimeFilter;
+import com.way.mscgateway.filter.RequestTimeGatewayFilterFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -60,18 +61,34 @@ public class MscGatewayApplication {
 //
 //    }
 
-    @Bean
-    public RouteLocator customerRouteLocator(RouteLocatorBuilder builder){
 
-        return builder.routes()
-                .route(r->r.path("/customer/**")
-                        .filters(f->f.filter(new RequestTimeFilter())
-                        .addRequestHeader("X-Response-Default-Foo", "Default-Bar"))
-                        .uri("http://httpbin.org:80/get")
-                        .order(0)
-                        .id("customer_filter_router")
-                ).build();
+    /**
+     * 自定义过滤器
+     * @return
+     */
+//    @Bean
+//    public RouteLocator customerRouteLocator(RouteLocatorBuilder builder){
+//
+//        return builder.routes()
+//                .route(r->r.path("/customer/**")
+//                        .filters(f->f.filter(new RequestTimeFilter())
+//                        .addRequestHeader("X-Response-Default-Foo", "Default-Bar"))
+//                        .uri("http://httpbin.org:80/get")
+//                        .order(0)
+//                        .id("customer_filter_router")
+//                ).build();
+//    }
+
+
+    /**
+     * 自定义过滤器工厂
+     * @return
+     */
+    @Bean
+    public RequestTimeGatewayFilterFactory elapsedGatewayFilterFactory(){
+        return new RequestTimeGatewayFilterFactory();
     }
+
 
 
     @RequestMapping("/fallback")

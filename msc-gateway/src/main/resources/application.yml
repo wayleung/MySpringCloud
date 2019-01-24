@@ -10,7 +10,7 @@ server:
 #....
 spring:
   profiles:
-    active: rewritepath_route
+    active: elapse_route
 
 ---
 spring:
@@ -125,3 +125,19 @@ spring:
         - RewritePath=/foo/(?<segment>.*),/$\{segment}
   profiles: rewritepath_route
 
+
+
+
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: elapse_route
+        uri: http://httpbin.org:80/get
+        filters:
+        - RequestTime=false
+#        名字是RequestTimeGatewayFilterFactory去掉GatewayFilterFactory
+        predicates:
+        - Method=GET
+  profiles: elapse_route

@@ -1,10 +1,10 @@
 package com.way.mscgateway;
 
 //import com.way.mscgateway.filter.RequestTimeFilter;
-import com.way.mscgateway.filter.RequestTimeGatewayFilterFactory;
-import com.way.mscgateway.filter.TokenFilter;
+import com.way.mscgateway.filter.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -100,6 +100,35 @@ public class MscGatewayApplication {
         return new TokenFilter();
     }
 
+
+    /**
+     * 注入 根据Hostname进行限流
+     * @return
+     */
+    @Bean
+    public HostAddrKeyResolver getHostAddrKeyResolver(){
+        return new HostAddrKeyResolver();
+    }
+
+
+    /**
+     * 注入 根据uri进行限流
+     * @return
+     */
+    @Bean
+    public UriKeyResolver uriKeyResolver(){
+        return new UriKeyResolver();
+    }
+
+
+    /**
+     * 注入 可以以用户的维度去限流：
+     * @return
+     */
+    @Bean
+    public UserKeyResolver userKeyResolver(){
+        return new UserKeyResolver();
+    }
 
 
     @RequestMapping("/fallback")

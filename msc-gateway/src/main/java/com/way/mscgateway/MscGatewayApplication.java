@@ -95,18 +95,18 @@ public class MscGatewayApplication {
      * 全局过滤器 注入到IOC容器
      * @return
      */
-    @Bean
-    public TokenFilter getTokenFilter(){
-        return new TokenFilter();
-    }
+//    @Bean
+//    public TokenFilter getTokenFilter(){
+//        return new TokenFilter();
+//    }
 
 
     /**
-     * 注入 根据Hostname进行限流
+     * 注入 根据Hostname进行限流  注意hostAddrKeyResolver名字 要跟yml中的ke-resolver对应！！！
      * @return
      */
     @Bean
-    public HostAddrKeyResolver getHostAddrKeyResolver(){
+    public HostAddrKeyResolver hostAddrKeyResolver(){
         return new HostAddrKeyResolver();
     }
 

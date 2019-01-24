@@ -10,7 +10,7 @@ server:
 #....
 spring:
   profiles:
-    active: elapse_route
+    active: limit_route
 
 ---
 spring:
@@ -141,3 +141,27 @@ spring:
         predicates:
         - Method=GET
   profiles: elapse_route
+
+
+
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: limit_route
+        uri: http://httpbin.org:80/get
+        predicates:
+        - Method=GET
+        filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 1
+            redis-rate-limiter.burstCapacity: 3
+            key-resolver: "#{@hostAddrKeyResolver}"
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+  profiles: limit_route
+
